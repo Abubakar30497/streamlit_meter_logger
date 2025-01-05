@@ -1,7 +1,7 @@
 import requests
 import json
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 import time
 import hashlib
 import hmac
@@ -55,14 +55,13 @@ def script():
     last_row = 10  # Track the last row for Google Sheet
     start_time = time.time()
 
-  # Authenticate Google Sheets
-    creds = ServiceAccountCredentials.from_json_keyfile_name(
-        "sheets-381015-aa5c72321656.json",
-        scopes=["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"],
-    )
+
+    # Set up the scope and credentials
+    creds = Credentials.from_service_account_file('sheets-381015-aa5c72321656.json',
+    scopes=['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive'])
+    
+    # Authorize the client
     client = gspread.authorize(creds)
-
-
 
     while True:
         # Get the current timestamp in milliseconds
